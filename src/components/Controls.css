@@ -1,50 +1,100 @@
 .controls {
   position: fixed;
   left: clamp(16px, 3vw, 42px);
-  bottom: clamp(16px, 3vw, 38px);
-  z-index: 10;
+  bottom: calc(clamp(16px, 3vw, 38px) + env(safe-area-inset-bottom, 0px));
+  z-index: 12;
 }
 
 .controls__next {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 9px 13px;
-  border: 1px solid var(--line-soft);
-  border-radius: 999px;
-  background: rgba(10, 7, 5, 0.24);
-  color: var(--paper-faint);
-  font-size: 0.61rem;
+  min-height: 40px;
+  padding: 8px 0;
+  color: rgba(243, 232, 216, 0.46);
+  font-family: var(--sans);
+  font-size: 0.6rem;
   font-weight: 500;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.65);
   transition:
-    color 0.35s ease,
-    border-color 0.35s ease,
-    background-color 0.35s ease,
-    opacity 0.35s ease;
+    color 0.45s ease,
+    opacity 0.45s ease;
+}
+
+.controls__next::after {
+  content: "";
+  position: absolute;
+  left: 20px;
+  right: 0;
+  bottom: 5px;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    rgba(var(--accent-rgb), 0.55),
+    rgba(var(--accent-rgb), 0)
+  );
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.55s var(--ease-out);
 }
 
 .controls__next:hover {
   color: var(--paper);
-  border-color: var(--line);
-  background: rgba(18, 13, 9, 0.42);
+}
+
+.controls__next:hover::after {
+  transform: scaleX(1);
 }
 
 .controls__next:disabled {
-  opacity: 0.4;
+  opacity: 0.35;
   cursor: default;
 }
 
+.controls__next:disabled::after {
+  transform: scaleX(0);
+}
+
 .controls__icon {
-  font-size: 0.85rem;
+  display: inline-block;
+  font-size: 0.86rem;
   line-height: 1;
+  transform-origin: center;
+  transition: transform 0.7s var(--ease-out);
+}
+
+.controls__next:hover .controls__icon {
+  transform: rotate(40deg);
 }
 
 .controls__count {
-  color: rgba(243, 232, 216, 0.2);
+  margin-left: 4px;
+  color: rgba(243, 232, 216, 0.22);
   font-size: 0.53rem;
   letter-spacing: 0.08em;
+}
+
+.controls__next:focus-visible {
+  outline: 1px solid rgba(var(--accent-rgb), 0.6);
+  outline-offset: 6px;
+}
+
+@media (max-width: 600px) {
+  .controls {
+    left: calc(14px + env(safe-area-inset-left, 0px));
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .controls__next {
+    gap: 7px;
+    font-size: 0.54rem;
+    letter-spacing: 0.15em;
+  }
+
+  .controls__count {
+    display: none;
+  }
 }
