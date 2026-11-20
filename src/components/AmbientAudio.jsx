@@ -46,7 +46,7 @@ function createEngine() {
       data[i] = last * 3.2;
     }
     // Soft ends keep the loop from clicking at the seam.
-    const edge = Math.floor(ctx.sampleRate * 0.25);
+    const edge = Math.floor(ctx.sampleRate * 0.06);
     for (let i = 0; i < edge; i += 1) {
       const fadeIn = i / edge;
       const fadeOut = (data.length - 1 - i) / edge;
@@ -153,14 +153,18 @@ function createEngine() {
   };
 
   const onError = () => {
-    if (!mode) startProcedural();
+    if (mode === "file") {
+      mode = null;
+      element.pause();
+    }
+    startProcedural();
   };
 
   element = new Audio(`${import.meta.env.BASE_URL}audio/ambient.mp3`);
   element.loop = true;
   element.preload = "metadata";
   element.addEventListener("canplay", startFile, { once: true });
-  element.addEventListener("error", onError, { once: true });
+  element.addEventListener("error", onError);
   fileTimer = window.setTimeout(() => {
     if (!mode) startProcedural();
   }, FILE_TIMEOUT);
