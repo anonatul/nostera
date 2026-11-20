@@ -21,8 +21,7 @@
   transform: translate3d(var(--parallax-x), var(--parallax-y), 0);
   transition:
     opacity 1.8s var(--ease-out),
-    filter 1.8s var(--ease-out),
-    transform 1.8s var(--ease-out);
+    filter 1.8s var(--ease-out);
   will-change: transform;
 }
 
