@@ -4,37 +4,104 @@
   z-index: 20;
   display: grid;
   place-items: center;
-  padding: 24px;
+  padding: calc(24px + env(safe-area-inset-top, 0px)) 24px
+    calc(24px + env(safe-area-inset-bottom, 0px));
+  overflow: hidden;
   cursor: pointer;
   text-align: center;
-  background: rgba(8, 5, 3, 0.72);
-  -webkit-backdrop-filter: blur(23px) saturate(0.7) brightness(0.58);
-  backdrop-filter: blur(23px) saturate(0.7) brightness(0.58);
+  background:
+    radial-gradient(
+      ellipse 70% 55% at 50% 48%,
+      rgba(30, 19, 11, 0.42) 0%,
+      rgba(8, 5, 3, 0.58) 62%,
+      rgba(6, 4, 3, 0.86) 100%
+    ),
+    rgba(8, 5, 3, 0.66);
+  -webkit-backdrop-filter: blur(26px) saturate(0.65) brightness(0.6);
+  backdrop-filter: blur(26px) saturate(0.65) brightness(0.6);
+}
+
+.intro::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 32% 26% at 50% 45%,
+    rgba(var(--accent-rgb), 0.11),
+    transparent 70%
+  );
+  filter: blur(30px);
+  animation: intro-haze 18s var(--ease-in-out) infinite alternate;
 }
 
 .intro__center {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: clamp(16px, 2.4vh, 26px);
   transform: translateY(-1vh);
 }
 
 .intro__wordmark {
   margin: 0;
   font-family: var(--serif);
+  font-size: clamp(3.5rem, 12vw, 10rem);
   font-weight: 400;
-  font-size: clamp(4rem, 12vw, 10rem);
-  line-height: 0.85;
-  letter-spacing: -0.045em;
+  line-height: 0.84;
   color: var(--paper);
+  text-shadow: 0 0 60px rgba(0, 0, 0, 0.55);
+}
+
+.intro__rule {
+  display: block;
+  width: clamp(34px, 6vw, 64px);
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(var(--accent-rgb), 0.75),
+    transparent
+  );
+  transform-origin: center;
 }
 
 .intro__prompt {
   margin: 0;
   font-family: var(--sans);
-  font-size: 0.65rem;
-  letter-spacing: 0.28em;
+  font-size: clamp(0.55rem, 0.72vw, 0.67rem);
+  font-weight: 400;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--paper-dim);
+}
+
+@keyframes intro-haze {
+  from {
+    transform: translate3d(-1%, 0.5%, 0) scale(0.97);
+    opacity: 0.6;
+  }
+  to {
+    transform: translate3d(1%, -0.5%, 0) scale(1.05);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .intro__wordmark {
+    font-size: clamp(3.1rem, 16vw, 5.4rem);
+  }
+
+  .intro__prompt {
+    font-size: 0.55rem;
+    letter-spacing: 0.24em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro::after {
+    animation: none;
+  }
 }
